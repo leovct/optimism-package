@@ -1,4 +1,4 @@
-utils = import_module("../../util.star")
+util = import_module("../../util.star")
 
 ethereum_package_shared_utils = import_module(
     "github.com/ethpandaops/ethereum-package/src/shared_utils/shared_utils.star"
@@ -58,7 +58,7 @@ def launch(
         dependency_set = create_dependency_set(chains)
         dependency_set_json = json.encode(dependency_set)
 
-    dependency_set_artifact = utils.write_to_file(
+    dependency_set_artifact = util.write_to_file(
         plan, dependency_set_json, DATA_DIR, DEPENDENCY_SET_FILE_NAME
     )
 
@@ -73,13 +73,15 @@ def launch(
     )
 
     service = plan.add_service(interop_constants.SUPERVISOR_SERVICE_NAME, config)
+    service_url = util.make_service_http_url(service)
 
-    observability.register_op_service_metrics_job(
-        observability_helper,
-        service,
-    )
+    if observability_helper.enabled:
+        observability.register_op_service_metrics_job(
+            observability_helper,
+            service,
+        )
 
-    return "op_supervisor"
+    return service_url
 
 
 def get_supervisor_config(
