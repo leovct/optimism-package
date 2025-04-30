@@ -704,7 +704,7 @@ def default_op_contract_deployer_global_deploy_overrides():
 
 def default_op_contract_deployer_params():
     return {
-        "image": "xavierromero/op-deployer:20250314", # us-docker.pkg.dev/oplabs-tools-artifacts/images/op-deployer:v0.3.0-rc.5
+        "image": "xavierromero/op-deployer:20250314",  # us-docker.pkg.dev/oplabs-tools-artifacts/images/op-deployer:v0.3.0-rc.5
         "l1_artifacts_locator": "https://storage.googleapis.com/oplabs-contract-artifacts/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz",
         "l2_artifacts_locator": "https://storage.googleapis.com/oplabs-contract-artifacts/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz",
         "global_deploy_overrides": default_op_contract_deployer_global_deploy_overrides(),
