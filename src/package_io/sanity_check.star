@@ -8,6 +8,7 @@ ROOT_PARAMS = [
     "global_node_selectors",
     "global_tolerations",
     "persistent",
+    "faucet",
 ]
 
 OBSERVABILITY_PARAMS = [
@@ -17,6 +18,11 @@ OBSERVABILITY_PARAMS = [
     "loki_params",
     "promtail_params",
     "grafana_params",
+]
+
+FAUCET_PARAMS = [
+    "enabled",
+    "image",
 ]
 
 PROMETHEUS_PARAMS = [
@@ -102,6 +108,7 @@ PARTICIPANT_CATEGORIES = {
         "cl_max_mem",
         "el_builder_type",
         "el_builder_image",
+        "el_builder_key",
         "el_builder_log_level",
         "el_builder_extra_env_vars",
         "el_builder_extra_labels",
@@ -143,6 +150,7 @@ SUBCATEGORY_PARAMS = {
         "interop_time_offset",
         "fund_dev_accounts",
     ],
+    "proxyd_params": ["image", "tag", "extra_params"],
     "batcher_params": ["image", "extra_params"],
     "proposer_params": [
         "enabled",
@@ -165,6 +173,10 @@ SUBCATEGORY_PARAMS = {
         "image",
         "cmd",
     ],
+    "tx_fuzzer_params": [
+        "image",
+        "tx_fuzzer_extra_args",
+    ],
 }
 
 OP_CONTRACT_DEPLOYER_PARAMS = [
@@ -176,11 +188,7 @@ OP_CONTRACT_DEPLOYER_PARAMS = [
 
 OP_CONTRACT_DEPLOYER_GLOBAL_DEPLOY_OVERRIDES = ["faultGameAbsolutePrestate"]
 
-ADDITIONAL_SERVICES_PARAMS = [
-    "blockscout",
-    "rollup-boost",
-    "da_server",
-]
+ADDITIONAL_SERVICES_PARAMS = ["blockscout", "rollup-boost", "da_server", "tx_fuzzer"]
 
 EXTERNAL_L1_NETWORK_PARAMS = [
     "network_id",
@@ -262,6 +270,14 @@ def sanity_check(plan, optimism_config):
                 "grafana_params",
                 GRAFANA_PARAMS,
             )
+
+    if "faucet" in optimism_config:
+        validate_params(
+            plan,
+            optimism_config["faucet"],
+            "faucet",
+            FAUCET_PARAMS,
+        )
 
     if "interop" in optimism_config:
         validate_params(
