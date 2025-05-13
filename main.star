@@ -20,10 +20,10 @@ ethereum_package_static_files = import_module(
 def run(plan, args={}):
     # Upload pre-deployed allocs as an artifact in the enclave.
     # Note: only use when deploying the optimism package alone.
-    plan.upload_files(
-        name="predeployed_allocs.json",
-        src="static_files/predeployed_allocs.json",
-    )
+    # plan.upload_files(
+    #     name="predeployed_allocs.json",
+    #     src="static_files/predeployed_allocs.json",
+    # )
 
     # Create a file server to serve OP artifacts.
     nginx_config_artifact = plan.upload_files(
