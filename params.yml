@@ -1,0 +1,34 @@
+ethereum_package:
+  participants:
+    - el_type: geth
+      el_image: ethereum/client-go:v1.14.12
+      cl_type: lighthouse
+      cl_image: ethpandaops/lighthouse:unstable
+      count: 1
+  network_params:
+    preset: minimal
+    genesis_delay: 5
+    additional_preloaded_contracts: '
+      {
+      "0x4e59b44847b379578588920cA78FbF26c0B4956C": {
+      "balance": "0ETH",
+      "code": "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3",
+      "storage": {},
+      "nonce": "1"
+      }
+      }'
+
+optimism_package:
+  # chains:
+  #   - participants:
+  #       - el_type: op-geth
+  #         el_image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth@sha256:8cad527a982e929f80fca539e612c59ccb503fc076b86ce1f4ebeefb112dee03
+  #         cl_type: op-node
+  #         cl_image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node@sha256:207943c6ca92a203e5c2f7908769023c76d2304060c8d8c4cfbd469b7fbaaf0d
+  op_contract_deployer_params:
+    # image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-deployer:v0.0.12
+    image: xavierromero/op-deployer:20250314
+    # l1_artifacts_locator: https://storage.googleapis.com/oplabs-contract-artifacts/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz
+    l1_artifacts_locator: http://file-server:80/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz
+    # l2_artifacts_locator: https://storage.googleapis.com/oplabs-contract-artifacts/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz
+    l2_artifacts_locator: http://file-server:80/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz

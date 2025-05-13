@@ -18,6 +18,36 @@ ethereum_package_static_files = import_module(
 
 
 def run(plan, args={}):
+    # Upload pre-deployed allocs as an artifact in the enclave.
+    # Note: only use when deploying the optimism package alone.
+    plan.upload_files(
+        name="predeployed_allocs.json",
+        src="static_files/predeployed_allocs.json",
+    )
+
+    # Create a file server to serve OP artifacts.
+    nginx_config_artifact = plan.upload_files(
+        src="static_files/nginx.conf",
+        name="nginx_config_artifact",
+    )
+    op_artifact = plan.upload_files(
+        src="static_files/artifacts-v1-fffcbb0ebf7f83311791534a41e65ef90df47797f9ca8f86941452f597f7128c.tar.gz",
+        name="op_artifact",
+    )
+    plan.add_service(
+        name="file-server",
+        config=ServiceConfig(
+            image="nginx:1.27",
+            ports={
+                "http": PortSpec(number=80),
+            },
+            files={
+                "/etc/nginx/conf.d": nginx_config_artifact,
+                "/content": op_artifact,
+            },
+        ),
+    )
+
     """Deploy Optimism L2s on an Ethereum L1.
 
     Args:
@@ -73,6 +103,7 @@ def run(plan, args={}):
         wait_for_sync.wait_for_sync(plan, l1_config_env_vars)
     else:
         plan.print("Deploying a local L1")
+        plan.print(ethereum_args)
         l1 = ethereum_package.run(plan, ethereum_args)
         plan.print(l1.network_params)
         # Get L1 info
